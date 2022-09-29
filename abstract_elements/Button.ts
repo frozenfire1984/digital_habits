@@ -6,22 +6,30 @@ function play() {
 	return "test"
 }
 
+interface IButton {
+	text: string,
+	bg: TBg,
+	size: TSize,
+	callback: () => void,
+	disabled: boolean,
+	layout_path: string
+}
+
 class Button {
 	text: string
 	bg: TBg
 	size: TSize
-	callback!: () => {}
+	callback!: () => void
 	disabled: boolean
 	layout_path!: string
 	
-	
-	constructor(text: string, bg: TBg = "blue", size: TSize = "sm", callback: () => {}, disabled: boolean = false, layout_path: string = '') {
-		this.text = text;
-		this.bg = bg;
-		this.size = size;
-		this.disabled = disabled;
-		this.layout_path = layout_path;
-		this.callback = callback;
+	constructor(prop: IButton) {
+		this.text = prop.text;
+		this.bg = prop.bg;
+		this.size = prop.size;
+		this.disabled = prop.disabled;
+		this.layout_path = prop.layout_path;
+		this.callback = prop.callback;
 	}
 	
 	click() {
@@ -32,10 +40,15 @@ class Button {
 			console.log("disabled!")
 		}
 	}
-	
-	
 }
 
-const btn = new Button("click me", "blue", "sm", play, true)
+const btn = new Button({
+	text: "click me",
+	bg: "blue",
+	size: "sm",
+	callback: play,
+	disabled: true,
+	layout_path: ''
+})
 
 btn.click()
