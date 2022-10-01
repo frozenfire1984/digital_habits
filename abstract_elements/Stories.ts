@@ -5,13 +5,15 @@ interface IStore {
 	inarchive?: boolean
 }
 
-class Stories {
+interface IStories {
+	user_id: number,
+}
+
+class Stories implements IStories{
 	stores: IStore[]
 	
-	constructor(user_id: number, store: IStore) {
-		const temp_arr = this.stores
-		temp_arr.push(store)
-		this.stores = temp_arr
+	constructor(public user_id) {
+		this.user_id = user_id
 	}
 	
 	add(store: IStore) {
@@ -19,11 +21,7 @@ class Stories {
 	}
 }
 
-const store = new Stories(1, {
-	title: "lorem",
-	content: "lorem ipsun foo bar",
-	date: 123,
-}) 
+const store = new Stories(1)
 
 store.add({
 	title: "lorem 2",
