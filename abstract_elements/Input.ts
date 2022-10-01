@@ -1,13 +1,18 @@
-class Input {
-	default_val: string
-	disabled: boolean
-	layout_path: string
+interface IInput {
 	value: string
-	
-	constructor(default_val: string, disabled: boolean = false, layout_path: string = '') {
-		this.default_val = default_val;
+	disabled?: boolean
+	layout_path?: string
+	placeholder?: string
+	handler?: () => void
+}
+
+class Input implements IInput {
+	constructor(public value, public disabled = false, public layout_path = '', public placeholder = 'enter value', public handler = null) {
+		this.value = value;
 		this.disabled = disabled
 		this.layout_path = layout_path
+		this.placeholder = placeholder
+		this.handler = handler
 	}
 	
 	change(value) {
@@ -16,4 +21,8 @@ class Input {
 		}
 	}
 }
+
+const inp = new Input("test", true, '')
+
+
 
