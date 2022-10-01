@@ -22,6 +22,6 @@ class VideoPlayer {
 	}
 }
 
-const player = new VideoPlayer("video.mov", "blue_theme")
+const player = new VideoPlayer("videos.mov", "blue_theme")
 
 player.play()
