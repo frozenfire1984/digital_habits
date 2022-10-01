@@ -1,18 +1,16 @@
 interface IInput {
 	value: string
 	disabled?: boolean
-	layout_path?: string
+	template_path?: string
 	placeholder?: string
-	handler?: () => void
 }
 
 class Input implements IInput {
-	constructor(public value, public disabled = false, public layout_path = '', public placeholder = 'enter value', public handler = null) {
+	constructor(public value, public disabled = false, public template_path = '', public placeholder = 'enter value') {
 		this.value = value;
 		this.disabled = disabled
-		this.layout_path = layout_path
+		this.template_path = template_path
 		this.placeholder = placeholder
-		this.handler = handler
 	}
 	
 	change(value) {
@@ -22,7 +20,7 @@ class Input implements IInput {
 	}
 }
 
-const inp = new Input("test", true, '')
+const inp = new Input({value: true, disabled: true})
 
 
 
