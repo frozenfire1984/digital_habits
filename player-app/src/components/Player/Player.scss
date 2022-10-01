@@ -1,0 +1,105 @@
+$color-solid: hsl(0, 0%, 90%);
+$color-assent: #0077ff;
+
+.player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+
+  &__preview-holder {
+    position: relative;
+    display: flex;
+    width: 50%;
+    aspect-ratio: 1 / 1;
+    align-items: center;
+    justify-content: center;
+    background: hsl(0, 0%, 90%);
+
+    .btn_start {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 10%;
+      aspect-ratio: 1 / 1;
+      font-size: 2rem;
+      background: hsla(0, 0%, 100%, .3);
+      border-radius: 100%;
+      border: 1px #fff solid;
+      color: $color-assent;
+    }
+  }
+
+  &__preview-img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__window {
+    position: absolute;
+    z-index: 100;
+    inset: 30% 0 0 30%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background: #fff;
+    border: 1px $color-solid solid;
+    box-shadow: 0 0 1rem hsla(0, 0%, 0%, .1);
+
+    &_fullscreen {
+      inset: 0;
+    }
+  }
+
+  &__video-holder {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  &__video {
+    flex: 1;
+    object-fit: cover;
+  }
+
+  .btn_video-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 2rem;
+    color: $color-assent;
+    background: #fff;
+    padding: 1px 2px;
+  }
+
+  &__controls {
+    display: flex;
+    gap: 2rem;
+    padding-block: 1rem;
+
+    .btn {
+      font-size: 2rem;
+      color: $color-assent;
+    }
+  }
+}
+
+.btn {
+  display: flex;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform .2s linear;
+
+  &:hover {
+    transform: scale(1.3);
+  }
+}
