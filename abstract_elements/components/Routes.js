@@ -14,17 +14,17 @@ var app_router = new Router([
     {
         url: "/",
         title: "main",
-        content: "lorem ipsum"
+        template_url: "pages/index"
     },
     {
         url: "/about",
         title: "about",
-        content: "lorem ipsum"
+        template_url: "pages/about"
     },
     {
         url: "/catalog",
         title: "catalog",
-        content: "lorem ipsum"
+        template_url: "pages/catalog"
     }
 ]);
 app_router.go("/about");

@@ -15,5 +15,5 @@ var VideoPlayer = /** @class */ (function () {
     };
     return VideoPlayer;
 }());
-var player = new VideoPlayer("video.mov", "blue_theme");
+var player = new VideoPlayer("videos.mov", "blue_theme");
 player.play();

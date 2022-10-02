@@ -10,26 +10,26 @@ interface IButton {
 	text: string,
 	bg: TBg,
 	size: TSize,
+	disabled?: boolean,
+	template_path?: string
 	callback: () => void,
-	disabled: boolean,
-	layout_path: string
 }
 
 class Button {
-	text: string
-	bg: TBg
-	size: TSize
-	callback!: () => void
-	disabled: boolean
-	layout_path!: string
+	text
+	bg
+	size
+	disabled
+	template_path
+	callback
 	
-	constructor(prop: IButton) {
-		this.text = prop.text;
-		this.bg = prop.bg;
-		this.size = prop.size;
-		this.disabled = prop.disabled;
-		this.layout_path = prop.layout_path;
-		this.callback = prop.callback;
+	constructor({text, bg, size, disabled = false, template_path = '', callback}: IButton) {
+		this.text = text;
+		this.bg = bg;
+		this.size = size;
+		this.disabled = disabled;
+		this.template_path = template_path;
+		this.callback = callback;
 	}
 	
 	click() {
@@ -47,8 +47,6 @@ const btn = new Button({
 	bg: "blue",
 	size: "sm",
 	callback: play,
-	disabled: true,
-	layout_path: ''
 })
 
 btn.click()
