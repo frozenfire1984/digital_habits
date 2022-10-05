@@ -1,6 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import { ImPlay3, ImPause2, ImEnlarge2, ImShrink2, ImPlay2, ImPause } from "react-icons/im";
 import { FaWindowClose, FaVolumeUp, FaVolumeMute } from "react-icons/fa";
+import {PlayerService} from "../PlayerService/PlayerService";
 import './Player.scss'
 
 interface IPlayer {
@@ -84,10 +85,7 @@ const Player = (props: IPlayer) => {
 			{isOpen &&
 			<div className={`player__window ${isFullscreen ? 'player__window_fullscreen' : ''}`}>
 				<div className="player__video-holder">
-					<video ref={$video} className='player__video'>
-						<source src={props.video_url} type="video/mp4"/>
-						<source src={props.video_url} type="video/ogg"/>
-					</video>
+					<PlayerService ref={$video} video_url={props.video_url} />
 					<button className='btn btn_video-close' onClick={closeHandler}>
 						<FaWindowClose />
 					</button>
