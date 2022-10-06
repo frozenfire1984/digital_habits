@@ -1,21 +1,27 @@
 import {useEffect, useRef, useState} from "react";
 import { ImPlay3, ImPause2, ImEnlarge2, ImShrink2, ImPlay2, ImPause } from "react-icons/im";
 import { FaWindowClose, FaVolumeUp, FaVolumeMute } from "react-icons/fa";
-import {PlayerService} from "../PlayerService/PlayerService";
+import {PlayerService} from "./PlayerService/PlayerService";
+import {StoriesService} from "./StoriesService/StoriesService";
 import './Player.scss'
 
 interface IPlayer {
-	video_url: string,
+	payload: string | string[],
 	preview_url?: string
+	default_fullscreen?: boolean
+	auto_start?: boolean
 }
 
-const Player = (props: IPlayer) => {
+const Player = ({payload, preview_url, default_fullscreen = true, auto_start = true}: IPlayer) => {
 	const [isPlay, setIsPlay] = useState(false)
-	const [isFullscreen, setIsFullscreen] = useState(false)
+	const [isFullscreen, setIsFullscreen] = useState(default_fullscreen)
 	const [isOpen, setIsOpen] = useState(false)
 	const [videoCurrent, setVideoCurrent] = useState<any>(null)
 	const [isMuted, setIsMuted] = useState(false)
 	const $video = useRef<any>(null)
+	
+	
+	
 	
 	useEffect(() => {
 		if (isPlay) {
@@ -47,14 +53,13 @@ const Player = (props: IPlayer) => {
 	const startHandler = () => {
 		if (!isOpen) {
 			setIsOpen(true)
-			setIsFullscreen(true)
 			setIsPlay(true)
 		}
 	}
 	
 	const closeHandler = () => {
 		setIsPlay(false)
-		setIsFullscreen(false)
+		setIsFullscreen(default_fullscreen)
 		setIsOpen(false)
 		setVideoCurrent(null)
 	}
@@ -74,8 +79,8 @@ const Player = (props: IPlayer) => {
 	return (
 		<div className='player'>
 			<div className="player__preview-holder">
-				{props.preview_url &&
-					<img className="player__preview-img" src={props.preview_url} alt=""/>
+				{preview_url &&
+					<img className="player__preview-img" src={preview_url} alt=""/>
 				}
 				<button className="btn btn_start" onClick={startHandler}>
 					<ImPlay3/>
@@ -85,7 +90,21 @@ const Player = (props: IPlayer) => {
 			{isOpen &&
 			<div className={`player__window ${isFullscreen ? 'player__window_fullscreen' : ''}`}>
 				<div className="player__video-holder">
-					<PlayerService ref={$video} video_url={props.video_url} />
+					{typeof payload === "string" &&
+						<PlayerService
+							ref={$video}
+							payload={payload}
+						/>
+					}
+					
+					{typeof payload === "object" &&
+						<StoriesService
+							payload={payload}
+							isPlay={isPlay}
+							setIsPlay={setIsPlay}
+							auto_start={auto_start}
+						/>
+					}
 					<button className='btn btn_video-close' onClick={closeHandler}>
 						<FaWindowClose />
 					</button>

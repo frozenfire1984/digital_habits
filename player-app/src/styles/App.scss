@@ -1,0 +1,67 @@
+@import "vars";
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  &__heading {
+    padding: 1rem;
+    padding-bottom: 0;
+
+  }
+
+  &__content {
+    display: flex;
+    flex: 1;
+    border-top: 1px $color-solid solid;
+  }
+}
+
+.tabs {
+  position: relative;
+  top: 1px;
+  display: flex;
+  list-style: none;
+  margin: 0;
+
+  &__item {
+    border: 1px $color-solid solid;
+    border-radius: .5rem .5rem 0 0;
+
+    //border-bottom: none;
+
+    &_active {
+      border-bottom-color: #fff;
+      cursor: none;
+
+      .btn {
+        cursor: none;
+      }
+    }
+
+    &:first-child ~ .tabs__item {
+      margin-left: -1px;
+    }
+
+  }
+
+  .btn {
+    border: none;
+    background: none;
+    font-size: 1rem;
+    padding: 1em;
+    cursor: pointer;
+  }
+}
+
+.player-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hide {
+  display: none !important;
+}

@@ -1,70 +1,88 @@
-import React, {useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import logo from './logo.svg';
-import './App.scss';
+import './styles/App.scss';
 import {Player} from './components/Player/'
-import {Table} from "./components/Table/Table";
-import {TableBody} from "./components/Table/TableBody";
-import {TableHead} from "./components/Table/TableHead";
-import {TableRow} from "./components/Table/TableRow";
-import {TableCell} from "./components/Table/TableCell";
 
 function App() {
-  
- 
+  const [tab, setTab] = useState(2)
   
   return (
-    <div className="App">
-      <div className="player-wrapper">
-        <Player
-          video_url="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-          preview_url="https://placeimg.com/640/480/any"
-        />
-        {/*<Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                name
-              </TableCell>
-              <TableCell>
-                last name
-              </TableCell>
-              <TableCell>
-                rating
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          
-          <TableBody>
-            <TableRow>
-              <TableCell ref={tdRef} onClick={() => console.log("test")}>
-                John
-              </TableCell>
-              <TableCell>
-                Jones
-              </TableCell>
-              <TableCell>
-                5
-              </TableCell>
-            </TableRow>
+    <div className="app">
+      <ul className="app__heading tabs">
+        <li className={`tabs__item ${tab === 1 ? 'tabs__item_active' : ''}`}>
+          <button className="btn" onClick={() => {setTab(1)}}>Player</button>
+        </li>
+        <li className={`tabs__item ${tab === 2 ? 'tabs__item_active' : ''}`}>
+          <button className="btn"  onClick={() => {setTab(2)}}>Stories</button>
+        </li>
+        <li className={`tabs__item ${tab === 3 ? 'tabs__item_active' : ''}`}>
+          <button className="btn"  onClick={() => {setTab(3)}}>Foo</button>
+        </li>
+      </ul>
+      
+    
+      <div className="app__content">
+      {(() => {
+        switch(tab) {
+          case 1:
+            return (
+              <div className="player-wrapper">
+                <Player
+                  payload="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                  preview_url="https://placeimg.com/640/480/any"
+                  default_fullscreen={true}
+                />
+              </div>
+            );
+
+          case 2:
+            return (
+              <div className="player-wrapper">
+                <Player
+                  payload={[
+                    //"https://placeimg.com/640/480/nature",
+                    //"https://placeimg.com/640/480/people",
+                    //"https://placeimg.com/640/480/tech",
+                    //"https://placeimg.com/640/480/arch"/
+                    "https://via.placeholder.com/150/0000FF/808080?text=foo",
+                    "https://via.placeholder.com/150/0000FF/808080?text=bar",
+                    "https://via.placeholder.com/150/0000FF/808080?text=baz",
+                    "https://via.placeholder.com/150/0000FF/808080?text=1",
+                    "https://via.placeholder.com/150/0000FF/808080?text=2",
+                    /*"https://via.placeholder.com/150/0000FF/808080?Text=3",
+                    "https://via.placeholder.com/150/0000FF/808080?Text=4",
+                    "https://via.placeholder.com/150/0000FF/808080?Text=5",
+                    "https://via.placeholder.com/150/0000FF/808080?Text=6",
   
-            <TableRow>
-              <TableCell>
-                John
-              </TableCell>
-              <TableCell>
-                Jones
-              </TableCell>
-              <TableCell>
-                5
-              </TableCell>
-            </TableRow>
-            
-            
-          </TableBody>
-        
-        </Table>*/}
-        
+                    "https://via.placeholder.com/150/0000FF/808080?Text=7",
+                    "https://via.placeholder.com/150/0000FF/808080?Text=8",
+                    "https://via.placeholder.com/150/0000FF/808080?Text=9",
+  
+                    "https://via.placeholder.com/150/0000FF/808080?Text=10",
+                    "https://via.placeholder.com/150/0000FF/808080?Text=11",
+                    "https://via.placeholder.com/150/0000FF/808080?Text=12",
+  
+                    "https://via.placeholder.com/150/0000FF/808080?Text=13",
+                    "https://via.placeholder.com/150/0000FF/808080?Text=14",
+                    "https://via.placeholder.com/150/0000FF/808080?Text=15",*/
+                    
+                    
+                  ]}
+                  //preview_url="https://placeimg.com/640/480/any"
+                  default_fullscreen={false}
+                />
+              </div>
+            );
+          case 3:
+            return (
+              <div>3</div>
+            )
+          default:
+            return 'foo';
+        }
+      })()}
       </div>
+      
     </div>
   );
 }
