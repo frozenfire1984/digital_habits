@@ -27,7 +27,7 @@ function App() {
                 <Player
                   payload="./videos/test.ogm"
                   //payload="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-                  previewUrl="https://placeimg.com/640/480/any"
+                  //previewUrl="https://placeimg.com/640/480/any"
                   defaultFullscreen={true}
                 />
               </div>

@@ -2,7 +2,7 @@ import {useRef, useEffect, useState} from "react";
 import {IPlayerBase} from "../types";
 import "./PlayerStories.scss"
 
-const PlayerStories = ({payload, isPlay, setIsPlay, intervalDuration = 0}: IPlayerBase) => {
+const PlayerStories = ({payload, isPlay, setIsPlay, intervalDuration = 1000}: IPlayerBase) => {
 	const [isLoading, setIsLoading] = useState(false)
 	const [imagesArray, setImagesArray] = useState<any[]>([])
 	const [imagesArrayLength, setImagesArrayLength] = useState<number | null>(null)
@@ -23,14 +23,14 @@ const PlayerStories = ({payload, isPlay, setIsPlay, intervalDuration = 0}: IPlay
 					img.onload = () => {
 						resolve(img)
 					}
-					
+
 					img.onerror = () => {
 						reject(url)
 					}
 				})
 			})
 		}
-		
+
 		// @ts-ignore
 		Promise.all(promises)
 			.then((data: any) => {
@@ -46,9 +46,9 @@ const PlayerStories = ({payload, isPlay, setIsPlay, intervalDuration = 0}: IPlay
 				setIsLoading(false)
 			})
 	},[payload])
-	
+
 	const [count, setCount] = useState(0)
-	
+
 	useEffect(() => {
 		if (imagesArray && imagesArrayLength && count <= imagesArrayLength - 1) {
 			if (divRef.current.children[0]) {
@@ -60,11 +60,12 @@ const PlayerStories = ({payload, isPlay, setIsPlay, intervalDuration = 0}: IPlay
 			setCount(0)
 		}
 	},[divRef, count, imagesArray, imagesArrayLength])
-	
+
 	useEffect(() => {
 		let interval: any | null = null
-		
+
 		if (isPlay) {
+			console.log("!")
 			interval = setInterval(() => {
 				setCount(prevState => prevState + 1)
 			}, intervalDuration)
@@ -72,20 +73,16 @@ const PlayerStories = ({payload, isPlay, setIsPlay, intervalDuration = 0}: IPlay
 			setIsPlay(false)
 			clearInterval(interval)
 		}
-		
+
 		return () => clearInterval(interval)
 	},[isPlay, count])
-	
+
 	if (isLoading) {
 		return <div>...loading</div>
 	}
 	
 	return (
 		<div className="stories-player">
-{/*			{isLoading && "...loading"}<br/>
-			tempIsPlay: {tempIsPlay.toString()}<br/>
-			isPlay: {isPlay.toString()}<br/>
-			{count}*/}
 			<div className="stories-player__frame" ref={divRef}/>
 		</div>
 	)

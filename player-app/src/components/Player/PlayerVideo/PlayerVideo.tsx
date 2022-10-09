@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import {IPlayerBase} from "../types";
 
 
-const PlayerVideo = ({payload, isPlay, setIsPlay, intervalDuration}: IPlayerBase) => {
+const PlayerVideo = ({payload, isPlay, setIsPlay, isMuted, setIsMuted, intervalDuration}: IPlayerBase) => {
 	const [videoCurrent, setVideoCurrent] = useState<any>(null)
 	const $video = useRef<any>(null)
 	
@@ -13,6 +13,16 @@ const PlayerVideo = ({payload, isPlay, setIsPlay, intervalDuration}: IPlayerBase
 			videoCurrent?.pause()
 		}
 	}, [isPlay, videoCurrent])
+
+
+	/*useEffect(() => {
+		if (isMuted) {
+			videoCurrent.muted = true
+		} else {
+			//some reason don't work!
+			videoCurrent.muted = false
+		}
+	}, [isMuted, videoCurrent])*/
 	
 	useEffect(() => {
 		setVideoCurrent($video.current)

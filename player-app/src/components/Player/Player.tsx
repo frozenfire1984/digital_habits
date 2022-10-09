@@ -18,12 +18,13 @@ const Player = ({payload, previewUrl, defaultFullscreen = true, autoStart = true
 	const [isOpen, setIsOpen] = useState(false)
 	//const [videoCurrent, setVideoCurrent] = useState<any>(null)
 	const [isMuted, setIsMuted] = useState(false)
+	
+	console.log("player")
 
-	console.log("defaultFullscreen")
-	console.log(defaultFullscreen)
+	//console.log("defaultFullscreen")
+	//console.log(defaultFullscreen)
 	
 	useEffect(() => {
-		
 		setIsFullscreen(defaultFullscreen)
 		
 		/*return () => {
@@ -32,7 +33,7 @@ const Player = ({payload, previewUrl, defaultFullscreen = true, autoStart = true
 			setIsOpen(false)
 			setIsMuted(false)
 		}*/
-	},[])
+	},[defaultFullscreen])
 	
 	/*useEffect(() => {
 		if (isPlay) {
@@ -62,6 +63,7 @@ const Player = ({payload, previewUrl, defaultFullscreen = true, autoStart = true
 	},[videoCurrent])*/
 	
 	const startHandler = () => {
+		console.log("start")
 		if (!isOpen) {
 			setIsOpen(true)
 			setIsPlay(autoStart)
@@ -88,7 +90,6 @@ const Player = ({payload, previewUrl, defaultFullscreen = true, autoStart = true
 	
 	return (
 		<div className='player'>
-			{isFullscreen.toString()}
 			<div className="player__preview-holder">
 				{previewUrl &&
 					<img className="player__preview-img" src={previewUrl} alt=""/>
@@ -114,6 +115,8 @@ const Player = ({payload, previewUrl, defaultFullscreen = true, autoStart = true
 							payload={payload}
 							isPlay={isPlay}
 							setIsPlay={setIsPlay}
+							//isMuted={isMuted}
+							//setIsMuted={setIsMuted}
 						/>
 					}
 					
