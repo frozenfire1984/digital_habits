@@ -1,49 +1,84 @@
 import React, {useEffect, useRef, useState} from "react";
 import {IPlayerBase} from "../types";
+import "./PlayerVideo.scss"
 
 interface IPlayerVideo extends IPlayerBase{
 	isMuted?: boolean,
+	isLoading: boolean
 }
 
-const PlayerVideo = ({payload, isPlay, setIsPlay, isMuted}: IPlayerVideo) => {
-	const $video = useRef<HTMLVideoElement>(null)
+const PlayerVideo = ({
+	 payload,
+	 isPlay,
+	 setIsPlay,
+	 isLoading,
+	 setIsLoading,
+
+	 setIsError,
+	 isMuted}: IPlayerVideo) => {
+	//const [isLoading, setIsLoading] = useState(false)
+	//const [isError, setIsError] = useState(false)
+	const $videoRef = useRef<HTMLVideoElement>(null)
+
 
 	useEffect(() => {
-		if ($video && $video.current) {
-			if (isPlay) {
-				$video.current.play()
-			} else {
-				$video.current.pause()
-			}
-
-			$video.current.addEventListener("ended", () => {
-				setIsPlay(false)
+		setIsLoading(true)
+		if ($videoRef && $videoRef.current) {
+			$videoRef.current.addEventListener("canplaythrough", () => {
+				setIsLoading(false)
 			})
 		}
-	},[$video, isPlay])
+	},[$videoRef])
 
 	useEffect(() => {
-		if ($video && $video.current) {
+		if ($videoRef && $videoRef.current && !isLoading) {
+			if (isPlay) {
+				$videoRef.current.play()
+			} else {
+				$videoRef.current.pause()
+			}
+
+			$videoRef.current.addEventListener("ended", () => {
+				setIsPlay(false)
+			})
+
+			$videoRef.current.addEventListener("error", () => {
+				console.log("error")
+				setIsError(true)
+				setIsPlay(false)
+				setIsLoading(false)
+			})
+
+			$videoRef.current.addEventListener("stalled", () => {
+				console.log("stalled")
+				setIsError(true)
+				setIsPlay(false)
+				setIsLoading(false)
+			})
+		}
+	},[$videoRef, isPlay, isLoading])
+
+	useEffect(() => {
+		if ($videoRef && $videoRef.current) {
 			if (isMuted) {
 				console.log("0")
-				$video.current.volume = 0
+				$videoRef.current.volume = 0
 			} else {
-				$video.current.volume = 1
+				$videoRef.current.volume = 1
 			}
 		}
 		console.log(isMuted)
 	},[isMuted])
+
+
 	
 	return (
 			<>
-				{isMuted?.toString()}<br/>
-				{isPlay?.toString()}
-		<video ref={$video} className='video-player'>
-			<source src={payload.toString()} type="video/mp4"/>
-			<source src={payload.toString()} type="video/ogg"/>
-			you browser don't support video!
-		</video>
-				</>
+
+				<video ref={$videoRef}  src={payload.toString()}  className='video-player'>
+					you browser don't support video!
+				</video>
+			</>
 	)
 }
 

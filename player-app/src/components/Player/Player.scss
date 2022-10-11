@@ -1,5 +1,23 @@
 @import "../../styles/vars";
 
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@mixin overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .player {
   display: flex;
   flex-direction: column;
@@ -71,15 +89,39 @@
     }
   }
 
-  &__video-holder {
+  &__holder {
+    position: relative;
     display: flex;
     flex-direction: column;
     flex: 1;
   }
 
-  .btn_video-close {
+  &__loading {
+    @include overlay;
+
+    &-spinner {
+      color: $color-assent;
+      font-size: 2rem;
+      animation: 1s spinner infinite linear;
+    }
+  }
+
+  &__error {
+    @include overlay;
+    background-color: rgba(255, 255, 255, .5);
+
+    &-message {
+      color: $color-error;
+    }
+  }
+
+
+
+
+  .btn_close {
     position: absolute;
     top: 0;
+    z-index: 10;
     right: 1rem;
     font-size: 2rem;
     color: $color-assent;
@@ -96,7 +138,12 @@
       font-size: 2rem;
       color: $color-assent;
     }
-  }
 
+    &_disabled {
+      opacity: .5;
+      filter: grayscale(100%);
+      pointer-events: none;
+    }
+  }
 }
 
