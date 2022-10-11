@@ -1,5 +1,7 @@
 abstract_elements/node_modules/
 player-app/node_modules/
+player-app/public/images
+player-app/public/videos
 code_from_lessons/node_modules/
 no_commit/
 .idea/

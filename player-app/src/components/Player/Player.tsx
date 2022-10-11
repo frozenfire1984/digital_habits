@@ -9,87 +9,56 @@ interface IPlayer {
 	payload: string | string[],
 	previewUrl?: string
 	defaultFullscreen?: boolean
-	autoStart?: boolean
+	autoStart?: boolean,
+	defaultMuted?: boolean,
+	controlsVisible?: boolean
 }
 
-const Player = ({payload, previewUrl, defaultFullscreen = true, autoStart = true}: IPlayer) => {
+const Player = ({payload, previewUrl, defaultFullscreen = true, autoStart = true, defaultMuted = false, controlsVisible = true}: IPlayer) => {
 	const [isPlay, setIsPlay] = useState(false)
 	const [isFullscreen, setIsFullscreen] = useState(false)
 	const [isOpen, setIsOpen] = useState(false)
-	//const [videoCurrent, setVideoCurrent] = useState<any>(null)
 	const [isMuted, setIsMuted] = useState(false)
-	
-	console.log("player")
 
-	//console.log("defaultFullscreen")
-	//console.log(defaultFullscreen)
-	
 	useEffect(() => {
 		setIsFullscreen(defaultFullscreen)
-		
-		/*return () => {
-			setIsPlay(false)
-			setIsFullscreen(defaultFullscreen)
-			setIsOpen(false)
-			setIsMuted(false)
-		}*/
-	},[defaultFullscreen])
-	
-	/*useEffect(() => {
-		if (isPlay) {
-			videoCurrent?.play()
-		} else {
-			videoCurrent?.pause()
-		}
-	}, [isPlay, videoCurrent])*/
-	
-	/*useEffect(() => {
-		if (isMuted) {
-			videoCurrent.muted = true
-		} else {
-			//some reason don't work!
-			//videoCurrent.muted = false
-		}
-	}, [isMuted, videoCurrent])*/
-	
-	/*useEffect(() => {
-		setVideoCurrent($video.current)
-	},[isOpen])*/
-	
-	/*useEffect(() => {
-		videoCurrent?.addEventListener("ended", () => {
-			setIsPlay(false)
-		})
-	},[videoCurrent])*/
-	
+		setIsPlay(autoStart)
+		setIsMuted(defaultMuted)
+	},[defaultFullscreen, autoStart, defaultMuted])
+
 	const startHandler = () => {
-		console.log("start")
+		console.log("startHandler")
 		if (!isOpen) {
 			setIsOpen(true)
 			setIsPlay(autoStart)
 		}
 	}
-	
+
 	const closeHandler = () => {
+		console.log("closeHandler")
 		setIsPlay(false)
 		setIsFullscreen(defaultFullscreen)
 		setIsOpen(false)
 	}
-	
+
 	const fullscreenHandler = () => {
+		console.log("fullscreenHandler")
 		setIsFullscreen(!isFullscreen)
 	}
-	
+
 	const pauseHandler = () => {
+		console.log("pauseHandler")
 		setIsPlay(!isPlay)
 	}
-	
+
 	const muteHandler = () => {
+		console.log("muteHandler")
 		setIsMuted(!isMuted)
 	}
-	
+
 	return (
 		<div className='player'>
+			isMuted: {isMuted.toString()}
 			<div className="player__preview-holder">
 				{previewUrl &&
 					<img className="player__preview-img" src={previewUrl} alt=""/>
@@ -98,7 +67,7 @@ const Player = ({payload, previewUrl, defaultFullscreen = true, autoStart = true
 					<ImPlay3/>
 				</button>
 			</div>
-			
+
 			{isOpen &&
 			<div className={`player__window ${isFullscreen ? 'player__window_fullscreen' : ''}`}>
 				<div className="player__video-holder">
@@ -107,9 +76,10 @@ const Player = ({payload, previewUrl, defaultFullscreen = true, autoStart = true
 							payload={payload}
 							isPlay={isPlay}
 							setIsPlay={setIsPlay}
+							isMuted={isMuted}
 						/>
 					}
-					
+
 					{typeof payload === "object" &&
 						<PlayerStories
 							payload={payload}
@@ -119,16 +89,20 @@ const Player = ({payload, previewUrl, defaultFullscreen = true, autoStart = true
 							//setIsMuted={setIsMuted}
 						/>
 					}
-					
+
 					<button className='btn btn_video-close' onClick={closeHandler}>
 						<FaWindowClose />
 					</button>
 				</div>
+				{controlsVisible &&
 				<div className="player__controls">
 					<button className="btn" onClick={pauseHandler}>{isPlay ? <ImPause/> : <ImPlay2/>}</button>
 					<button className="btn" onClick={fullscreenHandler}>{isFullscreen ? <ImShrink2/> : <ImEnlarge2/>}</button>
-					{typeof payload === "string" && <button className="btn" onClick={muteHandler}>{isMuted ? <FaVolumeMute/> : <FaVolumeUp/>}</button>}
+					{typeof payload === "string" &&
+					<button className="btn" onClick={muteHandler}>{isMuted ? <FaVolumeMute/> : <FaVolumeUp/>}</button>
+					}
 				</div>
+				}
 			</div>
 			}
 		</div>

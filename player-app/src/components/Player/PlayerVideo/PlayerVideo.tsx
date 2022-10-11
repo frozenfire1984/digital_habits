@@ -1,51 +1,49 @@
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {IPlayerBase} from "../types";
 
+interface IPlayerVideo extends IPlayerBase{
+	isMuted?: boolean,
+}
 
-const PlayerVideo = ({payload, isPlay, setIsPlay, isMuted, setIsMuted, intervalDuration}: IPlayerBase) => {
-	const [videoCurrent, setVideoCurrent] = useState<any>(null)
-	const $video = useRef<any>(null)
-	
-	useEffect(() => {
-		if (isPlay) {
-			videoCurrent?.play()
-		} else {
-			videoCurrent?.pause()
-		}
-	}, [isPlay, videoCurrent])
+const PlayerVideo = ({payload, isPlay, setIsPlay, isMuted}: IPlayerVideo) => {
+	const $video = useRef<HTMLVideoElement>(null)
 
+	useEffect(() => {
+		if ($video && $video.current) {
+			if (isPlay) {
+				$video.current.play()
+			} else {
+				$video.current.pause()
+			}
 
-	/*useEffect(() => {
-		if (isMuted) {
-			videoCurrent.muted = true
-		} else {
-			//some reason don't work!
-			videoCurrent.muted = false
+			$video.current.addEventListener("ended", () => {
+				setIsPlay(false)
+			})
 		}
-	}, [isMuted, videoCurrent])*/
-	
+	},[$video, isPlay])
+
 	useEffect(() => {
-		setVideoCurrent($video.current)
-	},[])
-	
-	useEffect(() => {
-		videoCurrent?.addEventListener("ended", () => {
-			setIsPlay(false)
-		})
-	},[videoCurrent])
-	
-	useEffect(() => {
-		return () => {
-			setVideoCurrent(null)
+		if ($video && $video.current) {
+			if (isMuted) {
+				console.log("0")
+				$video.current.volume = 0
+			} else {
+				$video.current.volume = 1
+			}
 		}
-	},[])
+		console.log(isMuted)
+	},[isMuted])
 	
 	return (
+			<>
+				{isMuted?.toString()}<br/>
+				{isPlay?.toString()}
 		<video ref={$video} className='video-player'>
 			<source src={payload.toString()} type="video/mp4"/>
 			<source src={payload.toString()} type="video/ogg"/>
 			you browser don't support video!
 		</video>
+				</>
 	)
 }
 

@@ -1,15 +1,25 @@
 import {useRef, useEffect, useState} from "react";
 import {IPlayerBase} from "../types";
+import {usePreload} from "../../../hooks/usePreload"
 import "./PlayerStories.scss"
 
-const PlayerStories = ({payload, isPlay, setIsPlay, intervalDuration = 1000}: IPlayerBase) => {
+interface IPlayerStories extends IPlayerBase{
+	intervalDuration?: number
+}
+
+interface IPromiseData {
+	[key: number]: object,
+	length: number
+}
+
+const PlayerStories = ({payload, isPlay, setIsPlay, intervalDuration = 1000}: IPlayerStories) => {
 	const [isLoading, setIsLoading] = useState(false)
-	const [imagesArray, setImagesArray] = useState<any[]>([])
-	const [imagesArrayLength, setImagesArrayLength] = useState<number | null>(null)
+	const [imagesArray, setImagesArray] = useState<HTMLImageElement[]>([])
+	const [imagesArrayLength, setImagesArrayLength] = useState<number>(0)
 	const [isError, setIsError] = useState(false)
-	const divRef = useRef<any>(null)
+	const divRef = useRef<HTMLDivElement>(null)
 	
-	let promises: Promise<any>[] | null = null
+	let promises: Promise<object>[] | null = null
 	const tempIsPlay = isPlay
 	
 	useEffect(() => {
@@ -30,27 +40,32 @@ const PlayerStories = ({payload, isPlay, setIsPlay, intervalDuration = 1000}: IP
 				})
 			})
 		}
-
-		// @ts-ignore
-		Promise.all(promises)
-			.then((data: any) => {
-				setImagesArray(data)
-				setImagesArrayLength(data.length)
-				setIsPlay(tempIsPlay)
-			})
-			.catch((e) => {
-				console.log(e)
-				setIsError(true)
-			})
-			.finally(() => {
-				setIsLoading(false)
-			})
 	},[payload])
+
+	useEffect(() => {
+		if (promises?.length) {
+			Promise.all(promises)
+					.then((data: IPromiseData | any) => {
+						setImagesArray(data)
+						setImagesArrayLength(data.length)
+						setIsPlay(tempIsPlay)
+					})
+					.catch((e) => {
+						console.log(e)
+						setIsError(true)
+					})
+					.finally(() => {
+						setIsLoading(false)
+					})
+		}
+	},[promises])
+	
+
 
 	const [count, setCount] = useState(0)
 
 	useEffect(() => {
-		if (imagesArray && imagesArrayLength && count <= imagesArrayLength - 1) {
+		if (imagesArray && imagesArrayLength && count <= imagesArrayLength - 1 && divRef && divRef.current) {
 			if (divRef.current.children[0]) {
 				divRef.current.removeChild(divRef.current.children[0])
 			}
@@ -62,11 +77,10 @@ const PlayerStories = ({payload, isPlay, setIsPlay, intervalDuration = 1000}: IP
 	},[divRef, count, imagesArray, imagesArrayLength])
 
 	useEffect(() => {
-		let interval: any | null = null
+		let interval: number = 0
 
 		if (isPlay) {
-			console.log("!")
-			interval = setInterval(() => {
+			interval = window.setInterval(() => {
 				setCount(prevState => prevState + 1)
 			}, intervalDuration)
 		} else {
