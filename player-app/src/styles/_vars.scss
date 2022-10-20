@@ -1,3 +1,13 @@
 $color-solid: hsl(0, 0%, 90%);
 $color-assent: #0077ff;
 $color-error: red;
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

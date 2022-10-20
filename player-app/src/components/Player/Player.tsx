@@ -1,28 +1,23 @@
-import {useEffect, useRef, useState} from "react";
-import { ImPlay3, ImPause2, ImEnlarge2, ImShrink2, ImPlay2, ImPause, ImSpinner9 } from "react-icons/im";
-import { FaWindowClose, FaVolumeUp, FaVolumeMute } from "react-icons/fa";
+import React, {useEffect, useState} from "react";
+import { ImPlay3, ImEnlarge2, ImShrink2, ImPlay2, ImPause, ImSpinner9 } from "react-icons/im";
+import { IoIosCloseCircle } from "react-icons/io";
+import { FaVolumeUp, FaVolumeMute } from "react-icons/fa";
 import {PlayerVideo} from "./PlayerVideo/PlayerVideo";
 import {PlayerStories} from "./PlayerStories/PlayerStories";
+import {Preview} from "../Preview/Preview";
 import './Player.scss'
-
-interface IPlayer {
-	payload: string | string[],
-	previewUrl?: string
-	defaultFullscreen?: boolean
-	autoStart?: boolean,
-	defaultMuted?: boolean,
-	controlsVisible?: boolean,
-	closable?: boolean,
-}
+import {IPlayer} from "./types";
 
 const Player = ({
 		payload,
-		previewUrl,
+		title = "",
+		previewUrl = "",
 		defaultFullscreen = true,
 		autoStart = true,
 		defaultMuted = false,
 		controlsVisible = true,
-		closable = true
+		closable = true,
+		intervalDuration
 }: IPlayer) => {
 	const [isPlay, setIsPlay] = useState(false)
 	const [isFullscreen, setIsFullscreen] = useState(false)
@@ -33,12 +28,10 @@ const Player = ({
 
 	useEffect(() => {
 		setIsFullscreen(defaultFullscreen)
-		//setIsPlay(autoStart)
 		setIsMuted(defaultMuted)
 	},[defaultFullscreen, autoStart, defaultMuted])
 
 	const startHandler = () => {
-		//console.log("startHandler")
 		if (!isOpen) {
 			setIsOpen(true)
 			setIsPlay(autoStart)
@@ -67,12 +60,13 @@ const Player = ({
 
 	return (
 		<div className='player'>
-			{/*isMuted: {isMuted.toString()}<br/>
-			isPlay: {isPlay.toString()}*/}
-			{/*isLoading: {isLoading.toString()}*/}
 			<div className="player__preview-holder">
+				{title &&
+				<div className="player__title">{title}</div>
+				}
+
 				{previewUrl &&
-					<img className="player__preview-img" src={previewUrl} alt=""/>
+				<Preview url={previewUrl}/>
 				}
 				<button className="btn btn_start" onClick={startHandler}>
 					<ImPlay3/>
@@ -84,7 +78,7 @@ const Player = ({
 
 				{closable &&
 				<button className='btn btn_close' onClick={closeHandler}>
-					<FaWindowClose/>
+					<IoIosCloseCircle/>
 				</button>
 				}
 
@@ -108,6 +102,7 @@ const Player = ({
 							setIsPlay={setIsPlay}
 							setIsLoading={setIsLoading}
 							setIsError={setIsError}
+							intervalDuration={intervalDuration}
 						/>
 					}
 
@@ -126,25 +121,16 @@ const Player = ({
 				</div>
 				{controlsVisible &&
 				<div className={`player__controls ${isLoading || isError ? 'player__controls_disabled' : ''}`}>
-					<button
-						className="btn"
-						onClick={pauseHandler}
-					>
+					<button className="btn" onClick={pauseHandler}>
 						{isPlay ? <ImPause/> : <ImPlay2/>}
 					</button>
 
-					<button
-						className="btn"
-						onClick={fullscreenHandler}
-					>
+					<button className="btn" onClick={fullscreenHandler}>
 						{isFullscreen ? <ImShrink2/> : <ImEnlarge2/>}
 					</button>
 
 					{typeof payload === "string" &&
-					<button
-						className="btn"
-						onClick={muteHandler}
-					>
+					<button className="btn" onClick={muteHandler}>
 						{isMuted ? <FaVolumeMute/> : <FaVolumeUp/>}
 					</button>
 					}

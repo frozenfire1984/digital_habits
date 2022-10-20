@@ -13,13 +13,9 @@ const PlayerVideo = ({
 	 setIsPlay,
 	 isLoading,
 	 setIsLoading,
-
 	 setIsError,
 	 isMuted}: IPlayerVideo) => {
-	//const [isLoading, setIsLoading] = useState(false)
-	//const [isError, setIsError] = useState(false)
 	const $videoRef = useRef<HTMLVideoElement>(null)
-
 
 	useEffect(() => {
 		setIsLoading(true)
@@ -69,16 +65,11 @@ const PlayerVideo = ({
 		}
 		console.log(isMuted)
 	},[isMuted])
-
-
 	
 	return (
-			<>
-
-				<video ref={$videoRef}  src={payload.toString()}  className='video-player'>
-					you browser don't support video!
-				</video>
-			</>
+		<video ref={$videoRef}  src={payload.toString()} className='video-player'>
+			you browser don't support video!
+		</video>
 	)
 }
 

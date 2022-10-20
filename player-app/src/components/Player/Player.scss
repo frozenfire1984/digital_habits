@@ -1,15 +1,5 @@
 @import "../../styles/vars";
 
-@keyframes spinner {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 @mixin overlay {
   position: absolute;
   inset: 0;
@@ -24,7 +14,6 @@
   align-items: center;
   justify-content: center;
   flex: 1;
-
 
   .btn {
     display: flex;
@@ -43,6 +32,7 @@
     position: relative;
     display: flex;
     width: 50%;
+    max-width: 400px;
     aspect-ratio: 1 / 1;
     align-items: center;
     justify-content: center;
@@ -54,14 +44,31 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 10%;
+      width: 20%;
       aspect-ratio: 1 / 1;
       font-size: 2rem;
-      background: hsla(0, 0%, 100%, .3);
+      background: hsla(0, 0%, 100%, .7);
       border-radius: 100%;
       border: 1px #fff solid;
       color: $color-assent;
+      box-shadow: 0 0 1rem hsla(0, 0%, 0%, .1);
+
+      svg {
+        stroke: #fff;
+        stroke-width: 1px;
+      }
     }
+  }
+
+  &__title {
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    width: 100%;
+    background: hsla(0, 0%, 0%, .5);
+    padding: 1rem;
+    color: #fff;
+    text-align: center;
   }
 
   &__preview-img {
@@ -76,16 +83,22 @@
   &__window {
     position: absolute;
     z-index: 100;
-    inset: 30% 0 0 30%;
+    width: MAX(50vw, 500px);
+    aspect-ratio: 1 / 1;
+    right: 0;
+    bottom: 1rem;
     display: flex;
     flex-direction: column;
     padding: 1rem;
     background: #fff;
     border: 1px $color-solid solid;
-    box-shadow: 0 0 1rem hsla(0, 0%, 0%, .1);
+    box-shadow: 0 0 1rem hsla(0, 0%, 0%, .3);
+    overflow: hidden;
 
     &_fullscreen {
-      inset: 0;
+      width: auto;
+      inset: 1rem;
+      aspect-ratio: initial;
     }
   }
 
@@ -93,6 +106,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     flex: 1;
   }
 
@@ -115,17 +129,15 @@
     }
   }
 
-
-
-
   .btn_close {
     position: absolute;
     top: 0;
     z-index: 10;
-    right: 1rem;
-    font-size: 2rem;
+    right: 0;
+    font-size: 3rem;
     color: $color-assent;
-    background: #fff;
+    background: transparent;
+    transform-origin: right top;
     padding: 1px 2px;
   }
 
