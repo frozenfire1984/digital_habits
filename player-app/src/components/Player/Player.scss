@@ -1,5 +1,12 @@
-$color-solid: hsl(0, 0%, 90%);
-$color-assent: #0077ff;
+@import "../../styles/vars";
+
+@mixin overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .player {
   display: flex;
@@ -8,10 +15,24 @@ $color-assent: #0077ff;
   justify-content: center;
   flex: 1;
 
+  .btn {
+    display: flex;
+    border: none;
+    background: #fff;
+    cursor: pointer;
+    padding: 0;
+    transition: transform .2s linear;
+
+    &:hover {
+      transform: scale(1.3);
+    }
+  }
+
   &__preview-holder {
     position: relative;
     display: flex;
     width: 50%;
+    max-width: 400px;
     aspect-ratio: 1 / 1;
     align-items: center;
     justify-content: center;
@@ -23,14 +44,31 @@ $color-assent: #0077ff;
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 10%;
+      width: 20%;
       aspect-ratio: 1 / 1;
       font-size: 2rem;
-      background: hsla(0, 0%, 100%, .3);
+      background: hsla(0, 0%, 100%, .7);
       border-radius: 100%;
       border: 1px #fff solid;
       color: $color-assent;
+      box-shadow: 0 0 1rem hsla(0, 0%, 0%, .1);
+
+      svg {
+        stroke: #fff;
+        stroke-width: 1px;
+      }
     }
+  }
+
+  &__title {
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    width: 100%;
+    background: hsla(0, 0%, 0%, .5);
+    padding: 1rem;
+    color: #fff;
+    text-align: center;
   }
 
   &__preview-img {
@@ -45,37 +83,61 @@ $color-assent: #0077ff;
   &__window {
     position: absolute;
     z-index: 100;
-    inset: 30% 0 0 30%;
+    width: MAX(50vw, 500px);
+    aspect-ratio: 1 / 1;
+    right: 0;
+    bottom: 1rem;
     display: flex;
     flex-direction: column;
     padding: 1rem;
     background: #fff;
     border: 1px $color-solid solid;
-    box-shadow: 0 0 1rem hsla(0, 0%, 0%, .1);
+    box-shadow: 0 0 1rem hsla(0, 0%, 0%, .3);
+    overflow: hidden;
 
     &_fullscreen {
-      inset: 0;
+      width: auto;
+      inset: 1rem;
+      aspect-ratio: initial;
     }
   }
 
-  &__video-holder {
+  &__holder {
+    position: relative;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     flex: 1;
   }
 
-  &__video {
-    flex: 1;
-    object-fit: cover;
+  &__loading {
+    @include overlay;
+
+    &-spinner {
+      color: $color-assent;
+      font-size: 2rem;
+      animation: 1s spinner infinite linear;
+    }
   }
 
-  .btn_video-close {
+  &__error {
+    @include overlay;
+    background-color: rgba(255, 255, 255, .5);
+
+    &-message {
+      color: $color-error;
+    }
+  }
+
+  .btn_close {
     position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    font-size: 2rem;
+    top: 0;
+    z-index: 10;
+    right: 0;
+    font-size: 3rem;
     color: $color-assent;
-    background: #fff;
+    background: transparent;
+    transform-origin: right top;
     padding: 1px 2px;
   }
 
@@ -88,18 +150,12 @@ $color-assent: #0077ff;
       font-size: 2rem;
       color: $color-assent;
     }
+
+    &_disabled {
+      opacity: .5;
+      filter: grayscale(100%);
+      pointer-events: none;
+    }
   }
 }
 
-.btn {
-  display: flex;
-  border: none;
-  background: none;
-  cursor: pointer;
-  padding: 0;
-  transition: transform .2s linear;
-
-  &:hover {
-    transform: scale(1.3);
-  }
-}

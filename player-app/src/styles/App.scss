@@ -1,0 +1,80 @@
+@import "vars";
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  &__heading {
+    padding: 1rem;
+    padding-bottom: 0;
+
+  }
+
+  &__content {
+    display: flex;
+    flex: 1;
+    border-top: 1px $color-solid solid;
+  }
+}
+
+.tabs {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  list-style: none;
+  margin: 0;
+
+  & &__item {
+    position: relative;
+    border: 1px $color-solid solid;
+    border-radius: .5rem .5rem 0 0;
+    //overflow: hidden;
+
+    //border-bottom: none;
+
+    &_active {
+      &::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        left: 0;
+        bottom: -2px;
+        height: 2px;
+        background: #fff;
+      }
+
+
+      .btn {
+        cursor: default;
+
+      }
+    }
+
+    &:first-child ~ .tabs__item {
+      margin-left: -1px;
+    }
+
+  }
+
+  .btn {
+    border: none;
+    background: #fff;
+    font-size: 1rem;
+    padding: 1em;
+    cursor: pointer;
+    border-radius: inherit;
+  }
+}
+
+.player-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hide {
+  display: none !important;
+}
+
